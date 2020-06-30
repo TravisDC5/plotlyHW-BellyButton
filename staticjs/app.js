@@ -2,52 +2,54 @@
 //      console.log(data);
 // });
 
-
+var data;
 
 function init() {
     
+  d3.json("samples.json").then(dataInit => {
+    data = dataInit;
+
+    var selection = dataInit.names;
     var selector = d3.select("#selDataset");
-  
-    
-    d3.json("samples.json").then(function(data){
-      data.names.forEach((name) => {
-        selector
-          .append("option")
-          .text(name)
-          .property("value", name);
-      });
-  
-      
-      const firstSample = data.names[0];
-      
-      updatePlotly(firstSample);
+
+    selection.forEach(value => {
+      selector
+        .append("option")
+        .text(value)
+        .attr("value", function() {
+          return value;
+        });
     });
-  }
+  });
+}
   
 d3.selectAll("#selDataset").on("change", updatePlotly); 
 
 function updatePlotly() {
 
-      d3.json("samples.json").then(function(importedData){
-        console.log(importedData.metadata);
-        var data = importedData;
-        
-        
-        var dropdownMenu = d3.select("#selDataset");
-        var dataset = dropdownMenu.property("value");
-        console.log(dataset);
-        var sampleData = d3.select(`#sample-metadata`);
-      
-        sampleData.html("");
-
-        
-        Object.entries(data).forEach(function([key,value]){
-          var row = sampleData.append("p");
-          row.text(`${key}:${value}`)
-        })
-      });
-   
+  var selectValue = d3.select("#selDataset").node().value;
+     
+    panelUpdate(selectValue);
+     
 }
+
+function panelUpdate(selectValue) {
+  
+  var filterData = data.metadata.filter(value => value.id == selectValue);
+
+  var panel = d3.select(".panel-body");
+  panel.html("");
+  
+  panel.append("p").text(`id: ${filterData[0].id}`);
+  panel.append("p").text(`ethnicity: ${filterData[0].ethnicity}`);
+  panel.append("p").text(`gender: ${filterData[0].gender}`);
+  panel.append("p").text(`age: ${filterData[0].age}`);
+  panel.append("p").text(`location: ${filterData[0].location}`);
+  panel.append("p").text(`bbtype: ${filterData[0].bbtype}`);
+  panel.append("p").text(`wfreq: ${filterVdata[0].wfreq}`);
+
+}
+
 init();
 
 
