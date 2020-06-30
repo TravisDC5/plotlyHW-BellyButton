@@ -31,14 +31,17 @@ function updatePlotly() {
       d3.json("samples.json").then(function(importedData){
         console.log(importedData.metadata);
         var data = importedData;
-            
+        
+        
         var dropdownMenu = d3.select("#selDataset");
         var dataset = dropdownMenu.property("value");
+        console.log(dataset);
         var sampleData = d3.select(`#sample-metadata`);
       
         sampleData.html("");
 
-        Object.entries(dataset).forEach(function([key,value]){
+        
+        Object.entries(data).forEach(function([key,value]){
           var row = sampleData.append("p");
           row.text(`${key}:${value}`)
         })
