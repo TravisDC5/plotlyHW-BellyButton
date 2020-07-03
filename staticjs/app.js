@@ -1,6 +1,6 @@
-d3.json("samples.json").then(function(data) {
-      console.log(data);
- });
+// d3.json("samples.json").then(function(data) {
+//       console.log(data);
+//  });
 
 var data;
 
@@ -63,7 +63,7 @@ function barChart(selectValue) {
   var otuLabels = filterBar.map(value => value.otu_labels);
   var otuLabelSlice = otuLabels[0].slice(0,10);
   
-  var otuIdText = otuId[0].map(value => 'OTD ' + value);
+  var otuIdText = otuId[0].map(value => 'OTU ' + value);
 
 
   //console.log(filterBar);
@@ -82,6 +82,14 @@ function barChart(selectValue) {
   };
 
   var layout = {
+    width: 400,
+    height: 450,
+    margin: {
+      t: 0,
+      b: 15,
+      l: 200,
+      r: 30,
+    },
     yaxis: {
       autorange: 'reversed'
     },
@@ -125,7 +133,7 @@ function gaugeChart(selectValue) {
   var gaugeTrace = { 
       type: 'pie',
       showlegend: false,
-      hole: 0.4,
+      hole: 0.5,
       rotation: 90,
        
       values: [81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],           
@@ -157,7 +165,7 @@ function gaugeChart(selectValue) {
       }    
       
       var degrees = 180-(20 * wfreq);
-      var radius = .5;
+      var radius = .4;
       var radians = degrees * Math.PI / 180;
       var aX = 0.025 * Math.cos((radians) * Math.PI / 180);
       var aY = 0.025 * Math.sin((radians) * Math.PI / 180);
@@ -178,10 +186,18 @@ function gaugeChart(selectValue) {
                         bXpath + ' ' + bYpath + ' L ' +      
                         cXpath + ' ' + cYpath + ' Z';
           
-          console.log(path);
+          //console.log(path);
 
       var gaugeLayout = {
           title: "<b>Belly Button Washing Frequency</b><br>Scrubs per Week",
+          width: 600,
+          height: 500,
+          margin: {
+            t: 100,
+            b: 0,
+            l: 0,
+            r: 0,
+          },
           shapes:[{
               type: 'path',
               path: path,
