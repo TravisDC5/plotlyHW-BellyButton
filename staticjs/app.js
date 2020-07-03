@@ -67,10 +67,10 @@ function barChart(selectValue) {
 
 
   //console.log(filterBar);
-  console.log(otuIdSlice);
-  console.log(otuValueSlice);
-  console.log(selectValue);
-  console.log(otuLabelSlice);
+  //console.log(otuIdSlice);
+  //console.log(otuValueSlice);
+  //console.log(selectValue);
+  //console.log(otuLabelSlice);
   
   //Create a trace
   var trace = {
@@ -117,82 +117,200 @@ function bubbleChart(selectValue) {
   Plotly.newPlot("bubble",bubbleData)
 
 }
-
 function gaugeChart(selectValue) {
+
   var filterData = data.metadata.filter(value => value.id == selectValue);
-  var weeklyFreq = filterData[0].wfreq;
-
- 
-  var degrees = 180 - (weeklyFreq*20),
-       radius = .7;
-  var radians = degrees * Math.PI / 180;
-  var x = radius * Math.cos(radians);
-  var y = radius * Math.sin(radians);
-
-  
-  var path = 'M -.0 -0.0 L .0 0.025 L ',
-            xPath = String(x),
-            space = ' ',
-            yPath = String(y),
-            endPath = ' Z';
-  var pathing = path.concat(xPath,space,yPath,endPath);
-  console.log(path);
+  var wfreq = filterData[0].wfreq;
 
   var gaugeTrace = { 
-    domain: {
-      x: [0, 1], 
-      y: [0, 1]},
-    name: "speed",
-    type: "indicator",
-    mode: 'gauge+number',
-    marker: {size: 20, color:'39FF14'},
-    showlegend: false,
-    text: weeklyFreq,
-    hoverinfo: 'text+name',
-    values: [81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],
-    rotation: 90,
-    text: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
-    textinfo: 'text',
-    textposition:'inside',
-    marker: 
-      {colors:['#84B589','rgba(14, 127, 0, .5)', 'rgba(110, 154, 22, .5)',
-                           'rgba(170, 202, 42, .5)', 'rgba(202, 209, 95, .5)',
-                           'rgba(210, 206, 145, .5)', 'rgba(232, 226, 202, .5)',
-                           '#F4F1E4','#F8F3EC', 'rgba(255, 255, 255, 0)',]},
-    labels: ['8-9','7-8','6-7','5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
-    hoverinfo: 'label',
-    hole: .5,
-    type: 'pie',
-    showlegend: false,
-    
-  };
-  
-  var layout = {
-    width: 600,
-    height: 500,
-    margin: { t: 100, b: 0 },
-    shapes:[{
-        
-        type: 'path',
-        path: pathing,
-        fillcolor: '39FF14',
-        line: {
-          color: '080808'
+      type: 'pie',
+      showlegend: false,
+      hole: 0.4,
+      rotation: 90,
+       
+      values: [81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],           
+      text: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+      direction: 'clockwise',
+      textinfo: 'text',
+      textposition: 'inside',    
+      marker: {
+          colors: ['#F8F3EC','#F4F1E5','#E9E6CA','#E2E4B1','#D5E49D','#B7CC92','#8CBF88','#8ABB8F','#85B48A','white'],
+          labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9',''],
+          hoverinfo: "label"
         },
-  }],
-    title: 'Belly Button Wash Frequency',
-    xaxis: {visible: false, range: [-1, 1]},
-    yaxis: {visible: false, range: [-1, 1]}
+        hoverinfo: "skip"
+      }
+                      
+      var dot = {
+          type: 'scatter',
+          x: [0],
+          y: [0],
+          marker: {
+            size: 14,
+            color:'39ff14'
+          },
+          showlegend: false,
+          hoverinfo: "skip",
+          line: {
+            color: '080808'
+          }
+      }    
+      
+      var weight = 0;
+      if (wfreq == 0){
+          weight = 3;
+      } else if (wfreq == 1 || wfreq == 2 || wfreq == 3){
+          weight = 3;
+      } else if (wfreq == 4){
+          weight = 2;
+      } else if (wfreq == 5){
+          weight = -.5;
+      } else if (wfreq == 6){
+          weight = -2;
+      } else if (wfreq == 7){
+          weight = -3;
+      }
+      
+      var degrees = 180-(20 * wfreq + weight);
+      var radius = .5;
+      var radians = degrees * Math.PI / 180;
+      var aX = 0.025 * Math.cos((radians) * Math.PI / 180);
+      var aY = 0.025 * Math.sin((radians) * Math.PI / 180);
+      var bX = -0.025 * Math.cos((radians) * Math.PI / 180);
+      var bY = -0.025 * Math.sin((radians) * Math.PI / 180);
+      var cX = radius * Math.cos(radians);
+      var cY = radius * Math.sin(radians);
 
-  };
-  
-  var gaugeData = [gaugeTrace];
-  
-  
-  Plotly.newPlot('gauge', gaugeData, layout);
+      
+      var    aXpath = String(aX);
+      var    aYpath = String(aY);
+      var    bXpath = String(bX);
+      var    bYpath = String(bY);    
+      var    cXpath = String(cX);
+      var    cYpath = String(cY);
+      
+      var path = 'M ' + aXpath + ' ' + aYpath + ' L ' +
+                        bXpath + ' ' + bYpath + ' L ' +      
+                        cXpath + ' ' + cYpath + ' Z';
+          
+          console.log(path);
 
-}
+      var gaugeLayout = {
+          title: "<b>Belly Button Washing Frequency</b><br>Scrubs per Week",
+          shapes:[{
+              type: 'path',
+              path: path,
+              fillcolor: '39ff14',
+              line: {
+                color: '080808'
+              }
+            }],
+          xaxis: {zeroline:false, 
+                  showticklabels:false,
+                  showgrid: false, 
+                  range: [-1, 1],
+                  fixedrange: true
+                },
+          yaxis: {zeroline:false, 
+                  showticklabels:false,
+                  showgrid: false, 
+                  range: [-1, 1],
+                  fixedrange: true
+                }
+        };
+        
+        Plotly.newPlot("gauge", [gaugeTrace, dot], gaugeLayout);
+  }
+// function gaugeChart(selectValue) {
 
+//   var filterData = data.metadata.filter(value => value.id == selectValue);
+//   var wfreq = filterData[0].wfreq;
+
+//   var gaugeTrace = { 
+//       type: 'pie',
+//       showlegend: false,
+//       hole: 0.4,
+//       rotation: 90,
+       
+//       values: [81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],           
+//       text: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+//       direction: 'clockwise',
+//       textinfo: 'text',
+//       textposition: 'inside',    
+//       marker: {
+//           colors: ['#F8F3EC','#F4F1E5','#E9E6CA','#E2E4B1','#D5E49D','#B7CC92','#8CBF88','#8ABB8F','#85B48A','white'],
+//           labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9',''],
+//           hoverinfo: "label"
+//         },
+//         hoverinfo: "skip"
+//       }
+                      
+//       var dot = {
+//           type: 'scatter',
+//           x: [0],
+//           y: [0],
+//           marker: {
+//             size: 14,
+//             color:'#850000'
+//           },
+//           showlegend: false,
+//           hoverinfo: "skip"
+//       }    
+      
+//       var weight = 0;
+//       if (wfreq == 2 || wfreq == 3){
+//           weight = 3;
+//       } else if (wfreq == 4){
+//           weight = 1;
+//       } else if (wfreq == 5){
+//           weight = -.5;
+//       } else if (wfreq == 6){
+//           weight = -2;
+//       } else if (wfreq == 7){
+//           weight = -3;
+//       }
+      
+//       var degrees = 180-(20 * wfreq + weight);
+//       var radius = .5;
+//       var radians = degrees * Math.PI / 180;
+//       var x = radius * Math.cos(radians);
+//       var y = radius * Math.sin(radians);
+
+//       var path = 'M .25 .25 L -.25 -.25 L',
+//           xPath = String(x),
+//           space = ' ',
+//           yPath = String(y),
+//           endPath = ' Z';
+//       var pathing = path.concat(xPath,space,yPath,endPath);
+
+//       var gaugeLayout = {
+//           title: "<b>Belly Button Washing Frequency</b><br>Scrubs per Week",
+//           shapes:[{
+//               type: 'path',
+//               path: pathing,
+//               fillcolor: '#850000',
+//               line: {
+//                 color: '#850000'
+//               }
+//             }],
+//           xaxis: {zeroline:false, 
+//                   showticklabels:false,
+//                   showgrid: false, 
+//                   range: [-1, 1],
+//                   fixedrange: true
+//                 },
+//           yaxis: {zeroline:false, 
+//                   showticklabels:false,
+//                   showgrid: false, 
+//                   range: [-1, 1],
+//                   fixedrange: true
+//                 }
+//         };
+        
+//         Plotly.newPlot("gauge", [gaugeTrace, dot], gaugeLayout);
+//         }
+
+  
 init();
 
 
