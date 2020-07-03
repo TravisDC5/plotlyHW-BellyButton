@@ -156,22 +156,7 @@ function gaugeChart(selectValue) {
           }
       }    
       
-      var weight = 0;
-      if (wfreq == 0){
-          weight = 3;
-      } else if (wfreq == 1 || wfreq == 2 || wfreq == 3){
-          weight = 3;
-      } else if (wfreq == 4){
-          weight = 2;
-      } else if (wfreq == 5){
-          weight = -.5;
-      } else if (wfreq == 6){
-          weight = -2;
-      } else if (wfreq == 7){
-          weight = -3;
-      }
-      
-      var degrees = 180-(20 * wfreq + weight);
+      var degrees = 180-(20 * wfreq);
       var radius = .5;
       var radians = degrees * Math.PI / 180;
       var aX = 0.025 * Math.cos((radians) * Math.PI / 180);
@@ -221,96 +206,7 @@ function gaugeChart(selectValue) {
         
         Plotly.newPlot("gauge", [gaugeTrace, dot], gaugeLayout);
   }
-// function gaugeChart(selectValue) {
 
-//   var filterData = data.metadata.filter(value => value.id == selectValue);
-//   var wfreq = filterData[0].wfreq;
-
-//   var gaugeTrace = { 
-//       type: 'pie',
-//       showlegend: false,
-//       hole: 0.4,
-//       rotation: 90,
-       
-//       values: [81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],           
-//       text: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
-//       direction: 'clockwise',
-//       textinfo: 'text',
-//       textposition: 'inside',    
-//       marker: {
-//           colors: ['#F8F3EC','#F4F1E5','#E9E6CA','#E2E4B1','#D5E49D','#B7CC92','#8CBF88','#8ABB8F','#85B48A','white'],
-//           labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9',''],
-//           hoverinfo: "label"
-//         },
-//         hoverinfo: "skip"
-//       }
-                      
-//       var dot = {
-//           type: 'scatter',
-//           x: [0],
-//           y: [0],
-//           marker: {
-//             size: 14,
-//             color:'#850000'
-//           },
-//           showlegend: false,
-//           hoverinfo: "skip"
-//       }    
-      
-//       var weight = 0;
-//       if (wfreq == 2 || wfreq == 3){
-//           weight = 3;
-//       } else if (wfreq == 4){
-//           weight = 1;
-//       } else if (wfreq == 5){
-//           weight = -.5;
-//       } else if (wfreq == 6){
-//           weight = -2;
-//       } else if (wfreq == 7){
-//           weight = -3;
-//       }
-      
-//       var degrees = 180-(20 * wfreq + weight);
-//       var radius = .5;
-//       var radians = degrees * Math.PI / 180;
-//       var x = radius * Math.cos(radians);
-//       var y = radius * Math.sin(radians);
-
-//       var path = 'M .25 .25 L -.25 -.25 L',
-//           xPath = String(x),
-//           space = ' ',
-//           yPath = String(y),
-//           endPath = ' Z';
-//       var pathing = path.concat(xPath,space,yPath,endPath);
-
-//       var gaugeLayout = {
-//           title: "<b>Belly Button Washing Frequency</b><br>Scrubs per Week",
-//           shapes:[{
-//               type: 'path',
-//               path: pathing,
-//               fillcolor: '#850000',
-//               line: {
-//                 color: '#850000'
-//               }
-//             }],
-//           xaxis: {zeroline:false, 
-//                   showticklabels:false,
-//                   showgrid: false, 
-//                   range: [-1, 1],
-//                   fixedrange: true
-//                 },
-//           yaxis: {zeroline:false, 
-//                   showticklabels:false,
-//                   showgrid: false, 
-//                   range: [-1, 1],
-//                   fixedrange: true
-//                 }
-//         };
-        
-//         Plotly.newPlot("gauge", [gaugeTrace, dot], gaugeLayout);
-//         }
-
-  
 init();
 
 
